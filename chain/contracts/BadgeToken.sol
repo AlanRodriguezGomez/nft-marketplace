@@ -45,13 +45,13 @@ contract BadgeToken is ERC721 {
      * @dev return tokenURI, image SVG data in it.
      */
     function tokenURI(uint256 tokenId) override public pure returns (string memory) {
-        string[3] memory parts;
+        /*string[3] memory parts;
 
         parts[0] = "<svg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='xMinYMin meet' viewBox='0 0 350 350'><style>.base { fill: white; font-family: serif; font-size: 300px; }</style><rect width='100%' height='100%' fill='brown' /><text x='100' y='260' class='base'>";
 
         parts[1] = Strings.toString(tokenId);
 
-        parts[2] = "</text></svg>";
+        parts[2] = "</text></svg>";*/
 
         /*string memory json = Base64.encode(bytes(string(abi.encodePacked(
             "{\"name\":\"Badge #", 
@@ -66,7 +66,7 @@ contract BadgeToken is ERC721 {
             '{',
             '"name": "Badge #', Strings.toString(tokenId), '",', 
             '"description": "Badge NFT with URL Image.",',
-            '"image": "https://gateway.pinata.cloud/ipfs/QmeCYwuEMuBFTs9Zh5ikpAH1zR3pJzvBEzbksyNjfntAHb"',
+            '"image": "https://ipfs.io/ipfs/QmeCYwuEMuBFTs9Zh5ikpAH1zR3pJzvBEzbksyNjfntAHb"',
             '}'
             ))));
 

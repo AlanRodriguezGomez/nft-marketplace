@@ -170,6 +170,28 @@ contract NFTMarketplace is ReentrancyGuard {
 
   }
 
+  function usedMarketItemMerchant(uint256 itemId, address buyer) public nonReentrant {
+    require(itemId <= _itemCounter.current(), "id must <= item count");
+    require(marketItems[itemId].state == State.Release, "item must be on market");
+    MarketItem storage item = marketItems[itemId];
+
+    require(IERC721(item.nftContract).ownerOf(item.tokenId) == buyer, "must be the owner");
+    //require(IERC721(item.nftContract).getApproved(item.tokenId) == address(this), "NFT must be approved to market");
+
+    item.state = State.Used;
+
+    emit MarketItemUsed(
+      itemId,
+      item.nftContract,
+      item.tokenId,
+      item.seller,
+      buyer,
+      item.price,
+      State.Used
+    );
+
+  }
+
   /**
    * @dev (buyer) buy a MarketItem from the marketplace.
    * Transfers ownership of the item, as well as funds

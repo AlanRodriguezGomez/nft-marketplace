@@ -8,6 +8,8 @@ import { BigNumber, ethers } from 'ethers';
 import useSWR from 'swr'
 import { addressNFTContract, addressMarketContract }  from '../projectsetting'
 import  CardERC721  from "./CardERC721"
+import { useQRCode } from 'next-qrcode';
+
 
 interface Props {
     option: number
@@ -19,6 +21,9 @@ export default function ReadNFTMarket(props:Props){
   const [items,setItems] = useState<[]>()
 
   const {  account, active, library} = useWeb3React<Web3Provider>()
+
+  const { Canvas } = useQRCode();
+
 
   // const { data: items} = useSWR([addressContract, 'fetchActiveItems'], {
   //   fetcher: fetcher(library, abi),
@@ -110,6 +115,23 @@ return (
             ? <Button width={220} type="submit" onClick={(e)=>buyInNFTMarket(e,item.id)}>Buy this!</Button>
             : <Text></Text>
             }
+            {item.buyer == account && item.state == 1 ? 
+                <Canvas
+                    text={'http://localhost:3000/useToken/' + item.tokenId}
+                    options={{
+                      type: 'image/jpeg',
+                      quality: 0.3,
+                      level: 'M',
+                      margin: 3,
+                      scale: 4,
+                      width: 200,
+                      color: {
+                        dark: '#072146',
+                        light: '#D4EDFC',
+                      },
+                    }}
+                />: <Text></Text>
+              }
             </Box>
           </GridItem>)
       })
