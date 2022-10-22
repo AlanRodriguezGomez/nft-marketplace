@@ -56,12 +56,12 @@ useEffect( () => {
             console.log(items)
           })    
           break;
-       /* case 3:
+       case 3:
             market.fetchMyUsedItems({from:account}).then((items:any)=>{
               setItems(items)
               console.log(items)
             })    
-            break;*/
+            break;
         default:
       }
 

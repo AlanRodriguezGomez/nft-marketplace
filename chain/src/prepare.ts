@@ -75,8 +75,8 @@ async function main() {
   console.log("8. == account#0 delete 6")
   await market.deleteMarketItem(6)
 
-  /*console.log("9. == account#1 used 1")
-  await market.connect(account1).useMarketItem(marketAddress, 1);*/
+  console.log("9. == account#1 used 1")
+  await market.connect(account1).usedMarketItem(1);
 
 }
 

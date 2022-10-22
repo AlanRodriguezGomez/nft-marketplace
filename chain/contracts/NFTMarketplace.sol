@@ -21,7 +21,7 @@ contract NFTMarketplace is ReentrancyGuard {
   address payable public marketowner;
   uint256 public listingFee = 0.025 ether;
 
-  enum State { Created, Release, Inactive }
+  enum State { Created, Release, Inactive, Used }
 
   struct MarketItem {
     uint id;
@@ -46,6 +46,16 @@ contract NFTMarketplace is ReentrancyGuard {
   );
 
   event MarketItemSold (
+    uint indexed id,
+    address indexed nftContract,
+    uint256 indexed tokenId,
+    address seller,
+    address buyer,
+    uint256 price,
+    State state
+  );
+
+  event MarketItemUsed (
     uint indexed id,
     address indexed nftContract,
     uint256 indexed tokenId,
@@ -138,6 +148,28 @@ contract NFTMarketplace is ReentrancyGuard {
 
   }
 
+  function usedMarketItem(uint256 itemId) public nonReentrant {
+    require(itemId <= _itemCounter.current(), "id must <= item count");
+    require(marketItems[itemId].state == State.Release, "item must be on market");
+    MarketItem storage item = marketItems[itemId];
+
+    require(IERC721(item.nftContract).ownerOf(item.tokenId) == msg.sender, "must be the owner");
+    //require(IERC721(item.nftContract).getApproved(item.tokenId) == address(this), "NFT must be approved to market");
+
+    item.state = State.Used;
+
+    emit MarketItemUsed(
+      itemId,
+      item.nftContract,
+      item.tokenId,
+      item.seller,
+      msg.sender,
+      item.price,
+      State.Used
+    );
+
+  }
+
   /**
    * @dev (buyer) buy a MarketItem from the marketplace.
    * Transfers ownership of the item, as well as funds
@@ -203,7 +235,11 @@ contract NFTMarketplace is ReentrancyGuard {
     return fetchHepler(FetchOperator.MyCreatedItems);
   }
 
-  enum FetchOperator { ActiveItems, MyPurchasedItems, MyCreatedItems}
+  function fetchMyUsedItems() public view returns (MarketItem[] memory) {
+    return fetchHepler(FetchOperator.MyUsedItems);
+  }
+
+  enum FetchOperator { ActiveItems, MyPurchasedItems, MyCreatedItems, MyUsedItems}
 
   /**
    * @dev fetch helper
@@ -245,7 +281,7 @@ contract NFTMarketplace is ReentrancyGuard {
          : false;
     }else if(_op == FetchOperator.MyPurchasedItems){
       return
-        (item.buyer ==  msg.sender) ? true: false;
+        (item.buyer ==  msg.sender && item.state != State.Used && item.state == State.Release) ? true: false;
     }else if(_op == FetchOperator.ActiveItems){
       return 
         (item.buyer == address(0) 
@@ -253,7 +289,10 @@ contract NFTMarketplace is ReentrancyGuard {
           && (IERC721(item.nftContract).getApproved(item.tokenId) == address(this))
         )? true
          : false;
-    }else{
+    }else if(_op == FetchOperator.MyUsedItems){
+      return
+        (item.buyer ==  msg.sender  && item.state == State.Used) ? true: false;
+    } else {  
       return false;
     }
   }

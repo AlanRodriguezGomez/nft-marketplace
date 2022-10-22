@@ -53,6 +53,11 @@ const Home: NextPage = () => {
         </Box>
 
         <Box  mb={0} p={4} w='100%' borderWidth="1px" borderRadius="lg">
+          <Heading my={4}  fontSize='xl'>NFT Market - my used - my collection</Heading>
+          <ReadNFTMarket  option={3} />
+        </Box>
+
+        <Box  mb={0} p={4} w='100%' borderWidth="1px" borderRadius="lg">
           <Heading my={4}  fontSize='xl'>ETH Balance <b>using SWR</b></Heading>
           <ETHBalanceSWR />
         </Box>
