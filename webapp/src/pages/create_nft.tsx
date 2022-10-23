@@ -27,33 +27,16 @@ export default function CommentPage() {
 
     const {  account, active, library} = useWeb3React<Web3Provider>()
 
-  useEffect( () => {
-
-        // console.log(addressContract,abi,library)
-        /*if(currId !== null) {
-            const nft:Contract = new Contract(addressNFTContract, abi, library.getSigner());
-            console.log(nft.provider)
-            console.log(account)
-            //Mint of a Token
-            nft.mintTo(account, "https://ipfs.io/ipfs/QmeCYwuEMuBFTs9Zh5ikpAH1zR3pJzvBEzbksyNjfntAHb").catch('error', console.error)
-            nft._getCurrentTokenId().then((id:any)=>{
-                setCurrId(id)
-            })
-            console.log(currId);
-        } */
-        console.log(currId);
-    },[active,account,currId])
 
     async function createNFTMarketItem(uri:string, name: string,description:string) {
 
         if(!(active && account && library)) return
       
-        //TODO check whether item is available beforehand
         const nft:Contract = new Contract(addressNFTContract, abi, library.getSigner());
         console.log(nft.provider)
         console.log(account)
 
-        //Mint of a Token
+
         await(await nft.mintTo(account, uri).catch('error', console.error)).wait()
 
         const nftGet:Contract = new Contract(addressNFTContract, abi, library);
@@ -74,9 +57,6 @@ export default function CommentPage() {
 
         const market:Contract = new Contract(addressMarketContract, abiMarket, library.getSigner());
 
-        //const listingFee = await marketGet.getListingFee({from:account});
-
-        //console.log('fee', listingFee);
         const auctionPrice = ethers.utils.parseUnits('1', 'ether')
         const listingFee = ethers.utils.parseUnits('0.025', 'ether')
 
@@ -84,49 +64,6 @@ export default function CommentPage() {
 
         console.log('created Item!');
 
-        /*const marketGet:Contract = new Contract(addressMarketContract, abiMarket, library);
-
-        library.getCode(addressMarketContract).then((result:string)=>{
-            console.log('code', result)
-            //check whether it is a contract
-            if(result === '0x') return
-
-            marketGet.getListingFee({from:account}).then((items:any)=>{
-                console.log('items', items)
-            });
-
-            marketGet.fetchActiveItems({from:account}).then((items:any)=>{
-                console.log('items', items)
-            }); 
-        });
-
-        
-
-        console.log('listed Item!');*/
-
-
-        /*nftGet._getCurrentTokenId().then((result:any)=>{
-            
-            if(result === '0x') return
-            
-            let id = parseInt(result._hex.replace('0x',''))
-
-            console.log('id token', id)
-
-            //Agregamos item al market place
-            nft.approve(addressMarketContract, id).then((result:any)=>{
-                console.log('fee', result);
-            }).catch('error', console.error)
-
-            //Listing Fee
-            /*market.getListingFee().then((result:any)=>{
-                console.log('fee', result);
-            })*/
-
-            //market.createMarketItem(addressNFTContract, id, { eth }, { value: listingFee })
-
-
-        //})
     }
 
     const sendFileToIPFS = async (e) => {
@@ -152,10 +89,7 @@ export default function CommentPage() {
 
             const ImgHash = `https://ipfs.io/ipfs/${resFile.data.IpfsHash}`;
             console.log('image to NFT', ImgHash);
-            createNFTMarketItem(ImgHash, name, description);
-            //console.log(ImgHash); 
-            //setImage(ImgHash)
-        //Take a look at your Pinata Pinned section, you will see a new file added to you list.   
+            createNFTMarketItem(ImgHash, name, description); 
 
         } catch (error) {
             console.log("Error sending File to IPFS: ")
@@ -163,28 +97,6 @@ export default function CommentPage() {
         }
         
     }
-
-    /*const createNFT = async () => {
-        if (!image || !name || !description) return
-        try{
-          const result = JSON.stringify({image, name, description})
-          mintThenList(result)
-        } catch(error) {
-          console.log("ipfs uri upload error: ", error)
-        }
-      }
-
-      /*const mintThenList = async (result) => {
-        // mint nft 
-        await(await nft.mint(uri)).wait()
-        // get tokenId of new nft 
-        const id = await nft.tokenCount()
-        // approve marketplace to spend nft
-        await(await nft.setApprovalForAll(marketplace.address, true)).wait()
-        // add nft to marketplace
-        const listingPrice = ethers.utils.parseEther(price.toString())
-        await(await marketplace.makeItem(nft.address, id, listingPrice)).wait()
-      }*/
 
   return (
     <>

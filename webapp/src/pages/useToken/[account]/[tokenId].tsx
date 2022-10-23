@@ -27,7 +27,6 @@ export default function CommentPage() {
 
     if(!(active && account && library)) return
 
-    // console.log(addressContract,abi,library)
     const market:Contract = new Contract(addressMarketContract, abi, library.getSigner());
     console.log(market.provider)
     console.log(account)
@@ -41,8 +40,6 @@ async function useNFTMarket(event:React.FormEvent,itemId:BigNumber) {
 
   if(!(active && account && library)) return
 
-     //TODO check whether item is available beforehand
-
     const market:Contract = new Contract(addressMarketContract, abi, library.getSigner());
   
     market.usedMarketItemMerchant( 
@@ -50,7 +47,6 @@ async function useNFTMarket(event:React.FormEvent,itemId:BigNumber) {
       address
     ).catch('error', console.error)
 
-  //called only when changed to active
   }
 
 

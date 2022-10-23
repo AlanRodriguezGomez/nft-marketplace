@@ -14,7 +14,6 @@ const ConnectMetamask = () => {
     const onClickConnect = () => {
       activate(injected,(error) => {
         if (error instanceof UserRejectedRequestError) {
-          // ignore user rejected error
           console.log("user refused")
         } else {
           setError(error)

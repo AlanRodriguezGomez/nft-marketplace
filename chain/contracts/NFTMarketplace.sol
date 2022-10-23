@@ -117,9 +117,6 @@ contract NFTMarketplace is ReentrancyGuard {
 
     require(IERC721(nftContract).getApproved(tokenId) == address(this), "NFT must be approved to market");
 
-    // change to approve mechanism from the original direct transfer to market
-    // IERC721(nftContract).transferFrom(msg.sender, address(this), tokenId);
-
     emit MarketItemCreated(
       id,
       nftContract,
@@ -133,64 +130,12 @@ contract NFTMarketplace is ReentrancyGuard {
     );
   }
 
-  /**
-   * @dev delete a MarketItem from the marketplace.
-   * 
-   * de-List an NFT.
-   * 
-   * todo ERC721.approve can't work properly!! comment out
-   */
-  /*function deleteMarketItem(uint256 itemId) public nonReentrant {
-    require(itemId <= _itemCounter.current(), "id must <= item count");
-    require(marketItems[itemId].state == State.Created, "item must be on market");
-    MarketItem storage item = marketItems[itemId];
-
-    require(IERC721(item.nftContract).ownerOf(item.tokenId) == msg.sender, "must be the owner");
-    require(IERC721(item.nftContract).getApproved(item.tokenId) == address(this), "NFT must be approved to market");
-
-    item.state = State.Inactive;
-
-    emit MarketItemSold(
-      itemId,
-      item.nftContract,
-      item.tokenId,
-      item.seller,
-      address(0),
-      0,
-      State.Inactive
-    );
-
-  }*/
-
-  /*function usedMarketItem(uint256 itemId) public nonReentrant {
-    require(itemId <= _itemCounter.current(), "id must <= item count");
-    require(marketItems[itemId].state == State.Release, "item must be on market");
-    MarketItem storage item = marketItems[itemId];
-
-    require(IERC721(item.nftContract).ownerOf(item.tokenId) == msg.sender, "must be the owner");
-    //require(IERC721(item.nftContract).getApproved(item.tokenId) == address(this), "NFT must be approved to market");
-
-    item.state = State.Used;
-
-    emit MarketItemUsed(
-      itemId,
-      item.nftContract,
-      item.tokenId,
-      item.seller,
-      msg.sender,
-      item.price,
-      State.Used
-    );
-
-  }*/
-
   function usedMarketItemMerchant(uint256 itemId, address buyer) public nonReentrant {
     require(itemId <= _itemCounter.current(), "id must <= item count");
     require(marketItems[itemId].state == State.Release, "item must be on market");
     MarketItem storage item = marketItems[itemId];
 
     require(IERC721(item.nftContract).ownerOf(item.tokenId) == buyer, "must be the owner");
-    //require(IERC721(item.nftContract).getApproved(item.tokenId) == address(this), "NFT must be approved to market");
 
     item.state = State.Used;
 
@@ -220,7 +165,7 @@ contract NFTMarketplace is ReentrancyGuard {
     uint256 id
   ) public payable nonReentrant {
 
-    MarketItem storage item = marketItems[id]; //should use storge!!!!
+    MarketItem storage item = marketItems[id]; 
     uint price = item.price;
     uint tokenId = item.tokenId;
 

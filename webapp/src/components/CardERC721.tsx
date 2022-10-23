@@ -39,19 +39,6 @@ useEffect( () => {
   if(!nftURI) return
   console.log('uri', nftURI);
 
-  /* try {
-    
-    const meta = axios.get(nftURI);
-    console.log('meta', base64.decode(meta?.data));
-    } catch (error) {
-      console.log("Error sending File to IPFS: ")
-      console.log(error)
-  }
-
-  const data = base64.decode(nftURI.slice(29))
-  console.log('data',data)
-  const itemInfo = JSON.parse(data)*/
-  //const svg = base64.decode(itemInfo.image.slice(26))
   setItemInfo({
     "tk": 'Ticket #' + props.tokenId,
     "name": props.name,
@@ -59,7 +46,7 @@ useEffect( () => {
     "uri": nftURI})
 
 },[nftURI])
-//<img src={`data:image/svg+xml;utf8,${itemInfo.svg}`} alt={itemInfo.name} width= '200px' />
+
 return (
   <Box my={2} bg='gray.100' borderRadius='md' width={220} px={3} py={4}>
   {itemInfo

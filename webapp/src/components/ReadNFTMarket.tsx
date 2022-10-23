@@ -28,24 +28,18 @@ export default function ReadNFTMarket(props:Props){
   const { isOpen, onOpen, onClose } = useDisclosure()
 
 
-  // const { data: items} = useSWR([addressContract, 'fetchActiveItems'], {
-  //   fetcher: fetcher(library, abi),
-  // })
-
 useEffect( () => {
     if(! active)
       setItems(undefined)
 
     if(!(active && account && library)) return
 
-    // console.log(addressContract,abi,library)
     const market:Contract = new Contract(addressMarketContract, abi, library);
     console.log(market.provider)
     console.log(account)
 
     library.getCode(addressMarketContract).then((result:string)=>{
-      //console.log('code', result);
-      //check whether it is a contract
+
       if(result === '0x') return
 
       switch(props.option){
@@ -77,7 +71,6 @@ useEffect( () => {
 
     })
 
-    //called only when changed to active
 },[active,account])
 
 function openModal(itemId:BigNumber) {
@@ -90,8 +83,6 @@ async function buyInNFTMarket(event:React.FormEvent,itemId:BigNumber) {
   event.preventDefault()
 
   if(!(active && account && library)) return
-
-  //TODO check whether item is available beforehand
 
   const market:Contract = new Contract(addressMarketContract, abi, library.getSigner());
   const auctionPrice = ethers.utils.parseUnits('1', 'ether')
