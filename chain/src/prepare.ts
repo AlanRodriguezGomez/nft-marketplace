@@ -3,6 +3,7 @@ import { ethers } from "hardhat"
 import { BadgeToken, NFTMarketplace } from  "../typechain"
 import { tokenAddress, marketAddress } from "./projectsetting"
 
+
 const _name='BadgeToken'
 const _symbol='BADGE'
 
@@ -30,10 +31,13 @@ async function main() {
   let owner:Signer,account1:Signer,account2:Signer
 
   [owner, account1,account2] = await ethers.getSigners()
+  //console.log('owner', owner);
   const address0 = await owner.getAddress()
   const address1 = await account1.getAddress()
   const address2 = await account2.getAddress()
 
+  const tkUri: string = "https://ipfs.io/ipfs/QmeCYwuEMuBFTs9Zh5ikpAH1zR3pJzvBEzbksyNjfntAHb";
+  
   const market:NFTMarketplace = await ethers.getContractAt("NFTMarketplace", marketAddress)
   const nft:BadgeToken = await ethers.getContractAt("BadgeToken", tokenAddress)
 
@@ -42,7 +46,7 @@ async function main() {
 
   console.log("1. == mint 1-6 to account#0")
   for(let i=1;i<=6;i++){
-    await nft.mintTo(address0)
+    await nft.mintTo(address0, tkUri)
   }
 
   console.log("2. == list 1-6 to market")
@@ -53,7 +57,7 @@ async function main() {
 
   console.log("3. == mint 7-9 to account#1")
   for(let i=7;i<=9;i++){
-    await nft.connect(account1).mintTo(address1)
+    await nft.connect(account1).mintTo(address1, tkUri)
   }
 
   console.log("4. == list 1-6 to market")

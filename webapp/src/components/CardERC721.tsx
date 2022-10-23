@@ -6,6 +6,9 @@ import useSWR from 'swr'
 import { ERC721ABI as abi} from "../abi/ERC712ABI"
 import { BigNumber } from 'ethers'
 import { fetcher } from '../utils/fetcher'
+import axios from 'axios';
+
+
 const base64 = require( "base-64")
 
 interface Props {
@@ -16,7 +19,7 @@ interface Props {
 interface ItemInfo{
   name:string,
   description:string,
-  svg:string
+  uri:string
 }
 
 export default function CardERC721(props:Props){
@@ -31,15 +34,25 @@ export default function CardERC721(props:Props){
 
 useEffect( () => {
   if(!nftURI) return
+  console.log('uri', nftURI);
+
+  /* try {
+    
+    const meta = axios.get(nftURI);
+    console.log('meta', base64.decode(meta?.data));
+    } catch (error) {
+      console.log("Error sending File to IPFS: ")
+      console.log(error)
+  }
 
   const data = base64.decode(nftURI.slice(29))
   console.log('data',data)
-  const itemInfo = JSON.parse(data)
+  const itemInfo = JSON.parse(data)*/
   //const svg = base64.decode(itemInfo.image.slice(26))
   setItemInfo({
-    "name":itemInfo.name,
-    "description":itemInfo.description,
-    "svg": itemInfo.image})
+    "name": 'Ticket #' + props.tokenId,
+    "description": 'A ticket for redeem in any place!',
+    "uri": nftURI})
 
 },[nftURI])
 //<img src={`data:image/svg+xml;utf8,${itemInfo.svg}`} alt={itemInfo.name} width= '200px' />
@@ -47,7 +60,7 @@ return (
   <Box my={2} bg='gray.100' borderRadius='md' width={220} height={260} px={3} py={4}>
   {itemInfo
   ?<Box>
-    <img src={itemInfo.svg} alt={itemInfo.name} width= '200px' />
+    <img src={itemInfo.uri} alt={itemInfo.name} width= '200px' />
     <Text fontSize='xl' px={2} py={2}>{itemInfo.name}</Text>
   </Box>
   :<Box />

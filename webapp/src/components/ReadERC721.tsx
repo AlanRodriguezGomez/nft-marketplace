@@ -57,8 +57,8 @@ useEffect(() => {
 return (
     <div>
         <Text >NFT Contract: {addressContract}</Text>
-        <Text >Current Account: {account}</Text>
-        <Text my={4}>ClassToken in current account:{balance
+        <Text >Cuenta Actual: {account}</Text>
+        <Text my={4}>ClassToken en esta cuenta:{balance
         ? balance.toString()
         : " "
         } {symbol}</Text>

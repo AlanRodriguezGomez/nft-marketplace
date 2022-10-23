@@ -6,7 +6,7 @@ import { Web3Provider } from '@ethersproject/providers'
 import { Contract } from "@ethersproject/contracts";
 import { addressNFTContract, addressMarketContract }  from '../../../projectsetting'
 import { BigNumber, ethers } from 'ethers';
-import { Button, Text } from "@chakra-ui/react"
+import { Box, Button, Center, Text, VStack } from "@chakra-ui/react"
 
 
 
@@ -57,10 +57,17 @@ async function useNFTMarket(event:React.FormEvent,itemId:BigNumber) {
   return (
     <>
 
-      <ConnectMetamask />
-      
-      <h1>TokenId: {id}</h1>
-      { active && typeof account === 'string' ? <Button width={220} type="submit" onClick={(e)=>useNFTMarket(e,BigNumber.from(id))}>Redeem NFT</Button> : <Text>Conectate para redeemer el token</Text>}
+      <Box h='calc(100vh)'>
+        <ConnectMetamask />
+        
+        <h1>TokenId: {id}</h1>
+        { active && typeof account === 'string' ? 
+        <Center>
+          <Button width={220} type="submit" onClick={(e)=>useNFTMarket(e,BigNumber.from(id))}>Canjear NFT</Button>
+        </Center>
+        : <Text>Conectate para canjear el token</Text>}
+      </Box>
+
     </>
   )
 }

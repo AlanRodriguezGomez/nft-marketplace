@@ -39,10 +39,10 @@ const ETHBalanceSWR = () => {
         <div>
         {active && balance ? (
             <Text fontSize="md" w='100%' my='2' align='left'>
-              ETH in account: {parseFloat(formatEther(balance)).toFixed(3)} {chainId===31337? 'Test':' '} ETH
+              ETH en esta cuenta: {parseFloat(formatEther(balance)).toFixed(3)} {chainId===31337? 'Test':' '} ETH
             </Text>
         ) : (
-            <Text fontSize="md" w='100%' my='2' align='left'>ETH in account:</Text>
+            <Text fontSize="md" w='100%' my='2' align='left'>ETH en esta cuenta:</Text>
         )}
         </div>
     )

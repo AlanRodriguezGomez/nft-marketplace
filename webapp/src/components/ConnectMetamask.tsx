@@ -35,16 +35,16 @@ const ConnectMetamask = () => {
         {active && typeof account === 'string' ? (
           <Box>  
             <Button type="button" w='100%' onClick={onClickDisconnect}>
-                Account: {formatAddress(account,4)}
+                Cuenta: {formatAddress(account,4)}
             </Button>
-            <Text fontSize="sm" w='100%' my='2' align='center'>ChainID: {chainId} connected</Text>
+            <Text fontSize="sm" w='100%' my='2' align='center'>ChainID: {chainId} conectado</Text>
           </Box>
         ) : (
           <Box>
             <Button type="button" w='100%' onClick={onClickConnect}>
-                Connect MetaMask
+                Conectar con MetaMask
             </Button>
-            <Text fontSize="sm" w='100%' my='2' align='center'> not connected </Text>
+            <Text fontSize="sm" w='100%' my='2' align='center'> no conectado </Text>
         </Box>  
 
         )}
