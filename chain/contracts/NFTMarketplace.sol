@@ -30,6 +30,8 @@ contract NFTMarketplace is ReentrancyGuard {
     address payable seller;
     address payable buyer;
     uint256 price;
+    string name;
+    string description;
     State state;
   }
 
@@ -42,6 +44,8 @@ contract NFTMarketplace is ReentrancyGuard {
     address seller,
     address buyer,
     uint256 price,
+    string name,
+    string description,
     State state
   );
 
@@ -52,6 +56,8 @@ contract NFTMarketplace is ReentrancyGuard {
     address seller,
     address buyer,
     uint256 price,
+    string name,
+    string description,
     State state
   );
 
@@ -62,6 +68,8 @@ contract NFTMarketplace is ReentrancyGuard {
     address seller,
     address buyer,
     uint256 price,
+    string name,
+    string description,
     State state
   );
 
@@ -84,7 +92,9 @@ contract NFTMarketplace is ReentrancyGuard {
   function createMarketItem(
     address nftContract,
     uint256 tokenId,
-    uint256 price
+    uint256 price,
+    string memory name,
+    string memory description
   ) public payable nonReentrant {
 
     require(price > 0, "Price must be at least 1 wei");
@@ -100,6 +110,8 @@ contract NFTMarketplace is ReentrancyGuard {
       payable(msg.sender),
       payable(address(0)),
       price,
+      name,
+      description,
       State.Created
     );
 
@@ -115,6 +127,8 @@ contract NFTMarketplace is ReentrancyGuard {
       msg.sender,
       address(0),
       price,
+      name,
+      description,
       State.Created
     );
   }
@@ -126,7 +140,7 @@ contract NFTMarketplace is ReentrancyGuard {
    * 
    * todo ERC721.approve can't work properly!! comment out
    */
-  function deleteMarketItem(uint256 itemId) public nonReentrant {
+  /*function deleteMarketItem(uint256 itemId) public nonReentrant {
     require(itemId <= _itemCounter.current(), "id must <= item count");
     require(marketItems[itemId].state == State.Created, "item must be on market");
     MarketItem storage item = marketItems[itemId];
@@ -146,9 +160,9 @@ contract NFTMarketplace is ReentrancyGuard {
       State.Inactive
     );
 
-  }
+  }*/
 
-  function usedMarketItem(uint256 itemId) public nonReentrant {
+  /*function usedMarketItem(uint256 itemId) public nonReentrant {
     require(itemId <= _itemCounter.current(), "id must <= item count");
     require(marketItems[itemId].state == State.Release, "item must be on market");
     MarketItem storage item = marketItems[itemId];
@@ -168,7 +182,7 @@ contract NFTMarketplace is ReentrancyGuard {
       State.Used
     );
 
-  }
+  }*/
 
   function usedMarketItemMerchant(uint256 itemId, address buyer) public nonReentrant {
     require(itemId <= _itemCounter.current(), "id must <= item count");
@@ -187,6 +201,8 @@ contract NFTMarketplace is ReentrancyGuard {
       item.seller,
       buyer,
       item.price,
+      item.name,
+      item.description,
       State.Used
     );
 
@@ -226,6 +242,8 @@ contract NFTMarketplace is ReentrancyGuard {
       item.seller,
       msg.sender,
       price,
+      item.name,
+      item.description,
       State.Release
     );    
   }

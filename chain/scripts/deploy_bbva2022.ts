@@ -7,6 +7,12 @@ async function main() {
 
   await token.deployed()
   console.log("BadgeToken deployed to:", token.address)
+
+  /* deploy the marketplace */
+  const Market = await ethers.getContractFactory("NFTMarketplace")
+  const market = await Market.deploy()
+
+  console.log("Marketplace deployed to:",market.address)
 }
 
 main().catch((error) => {
